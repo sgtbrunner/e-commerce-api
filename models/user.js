@@ -6,8 +6,8 @@ const UserSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'Please provide name'],
-    minLength: 3,
-    maxLength: 50,
+    minlength: 3,
+    maxlength: 50,
   },
   email: {
     type: String,
@@ -21,7 +21,7 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'Please provide password'],
-    minLength: 6,
+    minlength: 6,
   },
   role: {
     type: String,
@@ -35,8 +35,8 @@ UserSchema.pre('save', async function () {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-UserSchema.method.comparePassword = async function (candidatePassword) {
-  const isMatch = await bcrypt.compare(candidatePassword, this.password);
+UserSchema.methods.comparePassword = async function (canditatePassword) {
+  const isMatch = await bcrypt.compare(canditatePassword, this.password);
   return isMatch;
 };
 
