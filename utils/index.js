@@ -1,6 +1,7 @@
-const { createJWT, isTokenValid } = require('./jwt');
+const utils = require('./jwt');
+const constants = require('./constants');
 
 module.exports = {
-  createJWT,
-  isTokenValid,
+  ...utils,
+  ...constants,
 };
