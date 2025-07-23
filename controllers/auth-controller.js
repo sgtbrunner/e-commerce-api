@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
-const { attachCookiesToResponse } = require('../utils');
+const { attachCookiesToResponse, LOGIN_COOKIE_NAME } = require('../utils');
 
 const register = async (req, res) => {
   const { email, name, password } = req.body;
@@ -49,7 +49,12 @@ const login = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  return res.send('logout user');
+  res.cookie(LOGIN_COOKIE_NAME, 'logout', {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+
+  return res.send(StatusCodes.OK).json({ msg: 'user logged out!' });
 };
 
 module.exports = {
