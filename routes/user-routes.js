@@ -19,9 +19,11 @@ router
   .route('/')
   .get(authenticateUser, authorizePermissions(...ADMIN_ROLES), getAllUsers);
 
-router.route('/show-me').get(getUser);
+router.route('/show-me').get(authenticateUser, getUser);
 router.route('/update-user').patch(updateUser);
-router.route('/update-user-password').patch(updateUserPassword);
+router
+  .route('/update-user-password')
+  .patch(authenticateUser, updateUserPassword);
 
 router
   .route('/:id')
