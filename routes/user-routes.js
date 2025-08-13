@@ -1,5 +1,10 @@
 const express = require('express');
-const { authenticateUser } = require('../middleware/authentication');
+const {
+  authenticateUser,
+  authorizePermissions,
+} = require('../middleware/authentication');
+const { ADMIN_ROLES } = require('../utils');
+
 const router = express.Router();
 
 const {
@@ -10,12 +15,16 @@ const {
   updateUserPassword,
 } = require('../controllers/user-controller');
 
-router.route('/').get(authenticateUser, getAllUsers);
+router
+  .route('/')
+  .get(authenticateUser, authorizePermissions(...ADMIN_ROLES), getAllUsers);
 
 router.route('/show-me').get(getUser);
 router.route('/update-user').patch(updateUser);
 router.route('/update-user-password').patch(updateUserPassword);
 
-router.route('/:id').get(authenticateUser, getSingleUser);
+router
+  .route('/:id')
+  .get(authenticateUser, authorizePermissions(...ADMIN_ROLES), getSingleUser);
 
 module.exports = router;
