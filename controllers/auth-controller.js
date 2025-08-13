@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('../models/user');
 const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
 const { attachCookiesToResponse, LOGIN_COOKIE_NAME } = require('../utils');

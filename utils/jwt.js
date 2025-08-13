@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { ONE_DAY, LOGIN_COOKIE_NAME } = require('.');
+const { ONE_DAY, LOGIN_COOKIE_NAME } = require('./constants');
 
 const createJWT = ({ payload }) => {
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
