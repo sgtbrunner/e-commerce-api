@@ -20,7 +20,7 @@ router
   .get(authenticateUser, authorizePermissions(...ADMIN_ROLES), getAllUsers);
 
 router.route('/show-me').get(authenticateUser, getUser);
-router.route('/update-user').patch(updateUser);
+router.route('/update-user').patch(authenticateUser, updateUser);
 router
   .route('/update-user-password')
   .patch(authenticateUser, updateUserPassword);
