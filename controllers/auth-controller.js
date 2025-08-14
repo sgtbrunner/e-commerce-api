@@ -1,7 +1,11 @@
 const User = require('../models/user');
 const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
-const { attachCookiesToResponse, LOGIN_COOKIE_NAME } = require('../utils');
+const {
+  createTokenUser,
+  LOGIN_COOKIE_NAME,
+  attachCookiesToResponse,
+} = require('../utils');
 
 const register = async (req, res) => {
   const { email, name, password } = req.body;
@@ -20,7 +24,7 @@ const register = async (req, res) => {
     role: isFirstAccount ? 'admin' : 'user',
   });
 
-  const tokenUser = { name: user.name, userId: user._id, role: user.role };
+  const tokenUser = createTokenUser(user);
   attachCookiesToResponse({ res, user: tokenUser });
 
   return res.status(StatusCodes.CREATED).send({ user: tokenUser });
@@ -42,7 +46,7 @@ const login = async (req, res) => {
     throw new CustomError.UnauthenticatedError('Invalid Credentials');
   }
 
-  const tokenUser = { name: user.name, userId: user._id, role: user.role };
+  const tokenUser = createTokenUser(user);
   attachCookiesToResponse({ res, user: tokenUser });
 
   res.status(StatusCodes.OK).json({ user: tokenUser });
