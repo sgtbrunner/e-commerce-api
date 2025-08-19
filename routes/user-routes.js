@@ -5,8 +5,6 @@ const {
 } = require('../middleware/authentication');
 const { ADMIN_ROLES } = require('../utils');
 
-const router = express.Router();
-
 const {
   getAllUsers,
   getSingleUser,
@@ -14,6 +12,8 @@ const {
   updateUser,
   updateUserPassword,
 } = require('../controllers/user-controller');
+
+const router = express.Router();
 
 router
   .route('/')
