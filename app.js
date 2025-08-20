@@ -8,6 +8,15 @@ const app = express();
 // rest of the packages
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const fileUpload = require('express-fileupload');
+
+app.use(express.static('./public'));
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: './public/uploads',
+  })
+);
 
 // database
 const connectDB = require('./db/connect');
