@@ -14,6 +14,8 @@ const {
   uploadImage,
 } = require('../controllers/product-controller');
 
+const { getSingleProductReviews } = require('../controllers/review-controller');
+
 const router = express.Router();
 
 router
@@ -36,5 +38,7 @@ router
     [authenticateUser, authorizePermissions(...ADMIN_ROLES)],
     deleteProduct
   );
+
+router.route('/:id/reviews').get(getSingleProductReviews);
 
 module.exports = router;

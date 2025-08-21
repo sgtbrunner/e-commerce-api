@@ -1,4 +1,4 @@
-const Product = require('../models/Product');
+const Product = require('../models/product');
 const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
 const { MAX_FILE_SIZE } = require('../utils/constants');
@@ -19,7 +19,7 @@ const createProduct = async (req, res) => {
 
 const getSingleProduct = async (req, res) => {
   const { id: productId } = req.params;
-  const product = await Product.findById(productId);
+  const product = await Product.findById(productId).populate('reviews');
 
   if (!product) {
     throw new CustomError.NotFoundError(

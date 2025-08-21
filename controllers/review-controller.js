@@ -1,11 +1,14 @@
 const Review = require('../models/review');
-const Product = require('../models/Product');
+const Product = require('../models/product');
 const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
 const { checkPermissions } = require('../utils');
 
 const getAllReviews = async (req, res) => {
-  const reviews = await Review.find({});
+  const reviews = await Review.find({}).populate({
+    path: 'product',
+    select: 'name company price',
+  });
   res.status(StatusCodes.OK).json({ count: reviews.length, reviews });
 };
 
@@ -78,10 +81,17 @@ const deleteReview = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: 'Review deleted successfully' });
 };
 
+const getSingleProductReviews = async (req, res) => {
+  const { id: productId } = req.params;
+  const reviews = await Review.find({ product: productId });
+  res.status(StatusCodes.OK).json({ count: reviews.length, reviews });
+};
+
 module.exports = {
   getAllReviews,
   createReview,
   getSingleReview,
   updateReview,
   deleteReview,
+  getSingleProductReviews,
 };
