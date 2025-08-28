@@ -1,15 +1,21 @@
 require('dotenv').config();
-const path = require('path');
 require('express-async-errors');
+
+// Native modules
+const path = require('path');
 
 // express
 const express = require('express');
 const app = express();
 
 // rest of the packages
+const rateLimiter = require('express-rate-limit');
+const helmet = require('helmet');
+const xss = require('xss-clean');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
+const mongoSanitize = require('express-mongo-sanitize');
 
 app.use(express.static('./public'));
 app.use('/docs', express.static(path.join(__dirname, 'docs')));
@@ -34,6 +40,16 @@ const orderRouter = require('./routes/order-routes');
 const notFoundMiddleware = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 
+app.set('trust proxy', 1);
+app.use(
+  rateLimiter({
+    max: 60,
+    windowMs: 15 * 60 * 1000,
+  })
+);
+app.use(helmet());
+app.use(xss());
+app.use(mongoSanitize());
 app.use(morgan('tiny'));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
