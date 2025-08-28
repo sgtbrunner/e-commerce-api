@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "docs:build": "p2o ./docs/postman-collection.json -f ./docs/openapi.yaml && npx @redocly/cli build-docs ./docs/openapi.yaml -o ./docs/index.html --title \"E-commerce API\" && rm ./docs/openapi.yaml"
   },
   "author": "",
   "license": "ISC",
@@ -28,7 +29,8 @@
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.9"
+    "nodemon": "^2.0.9",
+    "postman-to-openapi": "^1.7.3"
   },
   "engines": {
     "node": "14.x"

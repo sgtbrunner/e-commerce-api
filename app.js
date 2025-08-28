@@ -1,4 +1,5 @@
 require('dotenv').config();
+const path = require('path');
 require('express-async-errors');
 
 // express
@@ -11,6 +12,7 @@ const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
 
 app.use(express.static('./public'));
+app.use('/docs', express.static(path.join(__dirname, 'docs')));
 app.use(
   fileUpload({
     useTempFiles: true,
@@ -36,8 +38,8 @@ app.use(morgan('tiny'));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
 
-app.get('/', (req, res) => {
-  return res.status(200).send('e-commerce API');
+app.get('/', (_req, res) => {
+  return res.status(200).redirect('/docs');
 });
 
 app.use('/api/v1/auth', authRouter);
